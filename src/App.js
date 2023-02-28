@@ -1,10 +1,12 @@
 import logo from './logo.svg';
 import React, { useState } from 'react';
 import './App.css';
+import Todolist from './components/Todolist';
 
 function App() {
   const [desc, setDesc] = useState('');
   const [todos, setTodos] = useState([]);
+  const [date, setDate] = useState ([]);
 
   const inputChanged = (event) => {
     setDesc(event.target.value);
@@ -16,21 +18,7 @@ function App() {
   }
   return (
     <div className="App">
-      <form onSubmit={addTodo}>
-        <input type="text" value={desc} onChange={inputChanged} />
-        <input type="submit" value="Add"/>
-      </form>
-      <table>
-        <tbody>
-          {
-            todos.map((todo, index) => 
-            <tr key={index}>
-            <td>{todo}</td>
-            </tr>
-            )
-          }
-        </tbody>
-      </table>
+      < Todolist />
     </div>
   );
 }
