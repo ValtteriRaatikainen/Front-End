@@ -1,7 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { AgGridReact } from 'ag-grid-react'
-import 'ag-grid-community/styles/ag-grid.css'
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/de';
+
+
+
 
 export default function Todolist() {
     const [todo, setTodo] = useState({
@@ -16,9 +25,9 @@ export default function Todolist() {
 
 
     const columns = [
-        { field: "description", sortable: true, filter: true, floatingFilter: true, animateRows: true },
-        { field: "date", sortable: true, filter: true, floatingFilter: true, animateRows: true },
-        { field: "priority", sortable: true, filter: true, floatingFilter: true, animateRows: true, cellStyle: params => params.value === "High" ? { color: 'red' } : { color: 'black' } }
+        { field: "description", sortable: true, filter: true, floatingFilter: true },
+        { field: "date", sortable: true, filter: true, floatingFilter: true },
+        { field: "priority", sortable: true, filter: true, floatingFilter: true, cellStyle: params => params.value === "High" ? { color: 'red' } : { color: 'black' } }
     ];
 
 
@@ -40,26 +49,31 @@ export default function Todolist() {
 
 
 
-
     return (
         <div>
-            <input
-                placeholder='Description'
-                type="text"
-                value={todo.description}
-                onChange={e => setTodo({ ...todo, description: e.target.value })} />
-            <input
-                placeholder='Date'
-                type="date"
-                value={todo.date}
-                onChange={e => setTodo({ ...todo, date: e.target.value })} />
-            <input
-                placeholder='Priority'
-                type="text"
-                value={todo.priority}
-                onChange={e => setTodo({ ...todo, priority: e.target.value })} />
-            <button onClick={addTodo}>Add</button>
-            <button onClick={deleteTodo}>Delete</button>
+            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+                <TextField
+                    label="Description"
+                    variant="standard"
+                    name="desc" value={todo.description}
+                    onChange={e => setTodo({ ...todo, description: e.target.value })} />
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+                    {<DatePicker
+                        label="Date"
+                        showTime={false}
+                        value={todo.date}
+                        onChange={date => setTodo({ ...todo, date })}
+                    />}
+                </LocalizationProvider>
+                <TextField
+                    label='Priority'
+                    variant="standard"
+                    name="priority" value={todo.priority}
+                    onChange={e => setTodo({ ...todo, priority: e.target.value })} />
+                <Button onClick={addTodo} variant="contained">Add</Button>
+                <Button onClick={deleteTodo} variant="contained" color="error">Delete</Button>
+            </Stack>
+
             <div className="ag-theme-material"
                 style={{ height: '700px', width: '70%', margin: 'auto' }} >
                 <AgGridReact
