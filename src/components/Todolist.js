@@ -54,7 +54,7 @@ export default function Todolist() {
             <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
                 <TextField
                     label="Description"
-                    variant="standard"
+                    variant="outlined"
                     name="desc" value={todo.description}
                     onChange={e => setTodo({ ...todo, description: e.target.value })} />
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
@@ -67,7 +67,7 @@ export default function Todolist() {
                 </LocalizationProvider>
                 <TextField
                     label='Priority'
-                    variant="standard"
+                    variant="outlined"
                     name="priority" value={todo.priority}
                     onChange={e => setTodo({ ...todo, priority: e.target.value })} />
                 <Button onClick={addTodo} variant="contained">Add</Button>
