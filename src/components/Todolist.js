@@ -7,7 +7,8 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/de';
+import 'dayjs/locale/fi';
+import dayjs from 'dayjs';
 
 
 
@@ -15,7 +16,7 @@ import 'dayjs/locale/de';
 export default function Todolist() {
     const [todo, setTodo] = useState({
         description: '',
-        date: '',
+        date: dayjs(new Date()),
         priority: ''
     });
 
@@ -25,15 +26,17 @@ export default function Todolist() {
 
 
     const columns = [
-        { field: "description", sortable: true, filter: true, floatingFilter: true },
-        { field: "date", sortable: true, filter: true, floatingFilter: true },
-        { field: "priority", sortable: true, filter: true, floatingFilter: true, cellStyle: params => params.value === "High" ? { color: 'red' } : { color: 'black' } }
+        { field: "description", sortable: true, filter: true, floatingFilter: true, flex: 1 },
+        { field: "date", sortable: true, filter: true, floatingFilter: true, flex: 1 },
+        { field: "priority", sortable: true, filter: true, floatingFilter: true, flex: 1, cellStyle: params => params.value === "High" ? { color: 'red' } : { color: 'black' } }
     ];
 
 
 
-    const addTodo = () => {
-        setTodos([todo, ...todos]);
+    const addTodo = (event) => {
+        event.preventDefault();
+        const newTodo = {...todo, date: todo.date.format("DD.MM.YYYY")};
+        setTodos([...todos, newTodo]);
         setTodo({ description: '', date: '', priority: '' });
     }
 
@@ -47,7 +50,9 @@ export default function Todolist() {
         }
     }
 
-
+    const dateChange = (date) => {
+        setTodo({ ...todo, date: date });
+      }
 
     return (
         <div>
@@ -57,12 +62,11 @@ export default function Todolist() {
                     variant="outlined"
                     name="desc" value={todo.description}
                     onChange={e => setTodo({ ...todo, description: e.target.value })} />
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fi">
                     {<DatePicker
                         label="Date"
-                        showTime={false}
                         value={todo.date}
-                        onChange={date => setTodo({ ...todo, date })}
+                       onChange={dateChange} 
                     />}
                 </LocalizationProvider>
                 <TextField
